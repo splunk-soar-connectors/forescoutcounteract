@@ -14,18 +14,17 @@
 # and limitations under the License.
 #
 #
-# Phantom App imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Usage of the consts file is recommended
-from forescoutcounteract_consts import *
-import requests
 import json
 import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
 from urllib.parse import unquote
+
+import phantom.app as phantom
+import requests
+from bs4 import BeautifulSoup
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from forescoutcounteract_consts import *
 
 
 class RetVal(tuple):
@@ -662,8 +661,9 @@ class ForescoutCounteractConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
