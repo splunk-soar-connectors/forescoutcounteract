@@ -26,10 +26,10 @@ configuration.
     parameters to ensure the correct functioning of the playbooks created on the earlier versions of
     the app.
 
-      
+
 
     -   get device info - Added two new parameters for this action.
 
-          
+
 
         -   The parameters 'host_ip' and 'host_mac' have been added.

@@ -17,6 +17,7 @@
     "min_phantom_version": "4.9.39220",
     "app_wizard_version": "1.0.0",
     "python_version": "3",
+    "fips_compliant": true,
     "latest_tested_versions": [
         "On-Prem, v8.2.2"
     ],
@@ -1482,7 +1483,7 @@
             },
             {
                 "module": "soupsieve",
-                "input_file": "wheels/soupsieve-2.3-py3-none-any.whl"
+                "input_file": "wheels/soupsieve-2.3.1-py3-none-any.whl"
             },
             {
                 "module": "urllib3",

@@ -14,18 +14,18 @@
 # and limitations under the License.
 #
 #
-# Phantom App imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Usage of the consts file is recommended
-from forescoutcounteract_consts import *
-import requests
 import json
+import sys
 import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
 from urllib.parse import unquote
+
+import phantom.app as phantom
+import requests
+from bs4 import BeautifulSoup
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from forescoutcounteract_consts import *
 
 
 class RetVal(tuple):
@@ -237,7 +237,7 @@ class ForescoutCounteractConnector(BaseConnector):
         body = {'username': config['web_username'], 'password': config['web_password']}
 
         try:
-            response = requests.post(url, headers=header, data=body, verify=config.get('verify_server_cert', False))
+            response = requests.post(url, headers=header, data=body, verify=config.get('verify_server_cert', False), timeout=FS_DEFAULT_TIMEOUT)
             token = response.text
         except:
             return (phantom.APP_ERROR, "Could not retrieve JWT")
@@ -662,8 +662,9 @@ class ForescoutCounteractConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
@@ -672,12 +673,14 @@ if __name__ == '__main__':
     argparser.add_argument('input_test_json', help='Input Test JSON file')
     argparser.add_argument('-', '--username', help='username', required=False)
     argparser.add_argument('-p', '--password', help='password', required=False)
+    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
 
     username = args.username
     password = args.password
+    verify = args.verify
 
     if (username is not None and password is None):
 
@@ -689,7 +692,7 @@ if __name__ == '__main__':
         try:
             print("Accessing the Login page")
             login_url = "{}/login".format(BaseConnector._get_phantom_base_url())
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=verify, timeout=FS_DEFAULT_TIMEOUT)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -702,11 +705,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=FS_DEFAULT_TIMEOUT)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platfrom. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -723,4 +726,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
