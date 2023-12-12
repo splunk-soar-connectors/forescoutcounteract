@@ -9,7 +9,7 @@
     "product_name": "CounterACT",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2018-2022 Splunk Inc.",
+    "license": "Copyright (c) 2018-2023 Splunk Inc.",
     "app_version": "2.0.5",
     "utctime_updated": "2022-01-07T22:44:06.000000Z",
     "package_name": "phantom_forescoutcounteract",
