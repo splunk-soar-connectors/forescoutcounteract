@@ -537,7 +537,6 @@ class ForescoutCounteractConnector(BaseConnector):
         self.save_progress("Installing Firewall")
         return self._handle_update_property(param)
 
-
     def _handle_update_property(self, param):
 
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
