@@ -532,6 +532,12 @@ class ForescoutCounteractConnector(BaseConnector):
         # BaseConnector will create a textual message based off of the summary dictionary
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_install_vfw(self, param):
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress("Installing Firewall")
+        return self._handle_update_property(param)
+
+
     def _handle_update_property(self, param):
 
         self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
@@ -627,7 +633,7 @@ class ForescoutCounteractConnector(BaseConnector):
             ret_val = self._handle_get_active_sessions(param)
 
         elif action_id == 'install_vfw':
-            ret_val = self._handle_update_property(param)
+            ret_val = self._handle_install_vfw(param)
 
         elif action_id == 'delete_property':
             ret_val = self._handle_delete_property(param)
