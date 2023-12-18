@@ -1,2 +1,1 @@
 **Unreleased**
-* Updated requests and certify dependencies in order to use platform packages [PAPP-30822, PAPP-31096]
