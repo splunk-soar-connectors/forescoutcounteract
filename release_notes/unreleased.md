@@ -1,3 +1,2 @@
 **Unreleased**
-* Updated requests dependencies in order to use platform packages [PAPP-30822]
-* Updated certify dependencies in order to use platform packages [PAPP-31096]
+* Updated requests and certify dependencies in order to use platform packages [PAPP-30822, PAPP-31096]
