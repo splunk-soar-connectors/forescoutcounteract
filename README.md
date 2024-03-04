@@ -2,7 +2,7 @@
 # ForeScout CounterACT
 
 Publisher: Splunk  
-Connector Version: 2.0.5  
+Connector Version: 2.0.6  
 Product Vendor: ForeScout  
 Product Name: CounterACT  
 Product Version Supported (regex): ".\*"  
@@ -52,7 +52,7 @@ The below configuration variables are required for this Connector to operate.  T
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
-**device** |  required  | string | Hostname or IP of appliance (ie: 10.10.10.10)
+**device** |  required  | string | IP Address of appliance (ie: 10.10.10.10)
 **ph_0** |  optional  | ph | Placeholder
 **dex_account** |  optional  | string | Data Exchange (DEX) account name
 **dex_username** |  optional  | string | Data Exchange (DEX) username
