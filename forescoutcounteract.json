@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2018-2023 Splunk Inc.",
-    "app_version": "2.0.5",
+    "app_version": "2.0.6",
     "utctime_updated": "2022-01-07T22:44:06.000000Z",
     "package_name": "phantom_forescoutcounteract",
     "main_module": "forescoutcounteract_connector.py",
@@ -23,7 +23,7 @@
     ],
     "configuration": {
         "device": {
-            "description": "Hostname or IP of appliance (ie: 10.10.10.10)",
+            "description": "IP Address of appliance (ie: 10.10.10.10)",
             "data_type": "string",
             "required": true,
             "order": 0
