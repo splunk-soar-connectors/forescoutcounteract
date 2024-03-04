@@ -11,7 +11,7 @@ Minimum Product Version: 4.9.39220
 This app implements various network access control actions for ForeScout
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2018-2023 Splunk Inc."
+[comment]: # "  Copyright (c) 2018-2024 Splunk Inc."
 [comment]: # ""
 [comment]: # "  Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
 [comment]: # ""
