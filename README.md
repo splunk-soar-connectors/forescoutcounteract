@@ -6,7 +6,7 @@ Connector Version: 2.0.6
 Product Vendor: ForeScout  
 Product Name: CounterACT  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 4.9.39220  
+Minimum Product Version: 6.1.1  
 
 This app implements various network access control actions for ForeScout
 
