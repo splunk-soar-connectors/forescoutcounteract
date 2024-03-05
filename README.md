@@ -99,10 +99,10 @@ No parameters are required for this action
 #### Action Output
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.data.\*.ip | string |  `ip`  |   10.1.16.161 
+action_result.data.\*.ip | string |  `ip`  |   10.0.0.1 
 action_result.data.\*.mac | string |  `forescout mac address`  `mac address`  |  
 action_result.data.\*.hostId | numeric |  `forescout host id`  |   167841953 
-action_result.data.\*.links.\*.href | string |  `url`  |   https://10.1.16.161/api/hosts/167841953 
+action_result.data.\*.links.\*.href | string |  `url`  |   https://10.0.0.1/api/hosts/167841953 
 action_result.data.\*.links.\*.rel | string |  |   self 
 action_result.status | string |  |   success  failed 
 action_result.message | string |  |   Num hosts: 2 
@@ -171,7 +171,7 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 action_result.parameter.host_id | numeric |  `forescout host id`  |   167841953 
 action_result.parameter.host_ip | string |  `ip`  |   203.0.113.1 
 action_result.parameter.host_mac | string |  `forescout mac address`  `mac address`  |   00:50:56:8b:00 
-action_result.data.\*.ip | string |  `ip`  |   10.1.16.161 
+action_result.data.\*.ip | string |  `ip`  |   10.0.0.1 
 action_result.data.\*.mac | string |  `forescout mac address`  `mac address`  |   00:50:56:8b:00 
 action_result.data.\*.id | numeric |  `forescout host id`  |   167841953 
 action_result.data.\*.fields.onsite.timestamp | numeric |  |   1537079515 
@@ -179,7 +179,7 @@ action_result.data.\*.fields.onsite.value | string |  |   true
 action_result.data.\*.fields.comment.timestamp | numeric |  |   1537296024 
 action_result.data.\*.fields.comment.value | string |  |   Test Comment 
 action_result.data.\*.fields.access_ip.timestamp | numeric |  |   1537296024 
-action_result.data.\*.fields.access_ip.value | string |  `ip`  |   10.1.16.161 
+action_result.data.\*.fields.access_ip.value | string |  `ip`  |   10.0.0.1 
 action_result.data.\*.fields.samba_open_ports.timestamp | numeric |  |   1537296024 
 action_result.data.\*.fields.samba_open_ports.value | string |  |   0 
 action_result.data.\*.fields.user_def_fp.timestamp | numeric |  |   1537297213 
@@ -209,8 +209,8 @@ action_result.data.\*.fields.cl_rule.value | string |  |   counteract
 action_result.data.\*.fields.engine_seen_packet.timestamp | numeric |  |   1537315647 
 action_result.data.\*.fields.engine_seen_packet.value | string |  |   true 
 action_result.status | string |  |   success  failed 
-action_result.message | string |  |   Host id: 10.1.16.161 
-action_result.summary.host_ip | string |  `ip`  |   10.1.16.161 
+action_result.message | string |  |   Host id: 10.0.0.1 
+action_result.summary.host_ip | string |  `ip`  |   10.0.0.1 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1   
 
@@ -233,10 +233,10 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.prop_val | string |  |   fsapi_Prop_String=mystring, fsapi_Prop_Test=test 
 action_result.parameter.rule_id | string |  `forescout rule id`  `forescout policy id`  |   7042988451856611698 
-action_result.data.\*.ip | string |  `ip`  |   10.1.16.1  10.1.16.161 
+action_result.data.\*.ip | string |  `ip`  |   10.0.0.1 
 action_result.data.\*.mac | string |  `forescout mac address`  `mac address`  |   00:50:56:8b:00 
 action_result.data.\*.hostId | numeric |  `forescout host id`  |   167841793  167841953 
-action_result.data.\*.links.\*.href | string |  `url`  |   https://10.1.16.161/api/hosts/167841793  https://10.1.16.161/api/hosts/167841953 
+action_result.data.\*.links.\*.href | string |  `url`  |   https://10.0.0.1/api/hosts/167841793 
 action_result.data.\*.links.\*.rel | string |  |   self 
 action_result.status | string |  |   success  failed 
 action_result.message | string |  |   Num active sessions: 5 
@@ -265,17 +265,17 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.property_value | string |  |   new vfw 
 action_result.parameter.property_name | string |  `forescout property name`  |   Prop_String 
-action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.1.16.3 
+action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.0.0.1 
 action_result.parameter.host_key_name | string |  |   ip 
 action_result.data.\*.response_code | string |  |   FSAPI_OK 
-action_result.data.\*.response_message | string |  |   Successfully updated [1] properties for new host [ip=10.1.16.3] 
-action_result.data.\*.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.1.16.3 
+action_result.data.\*.response_message | string |  |   Successfully updated [1] properties for new host [ip=10.0.0.1] 
+action_result.data.\*.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.0.0.1 
 action_result.data.\*.host_key_name | string |  |   ip 
 action_result.data.\*.property_value | string |  |   new vfw 
 action_result.data.\*.property_name | string |  `forescout property name`  |   Prop_String 
 action_result.status | string |  |   success  failed 
-action_result.message | string |  |   Message: Successfully updated [1] properties for new host [ip=10.1.16.3] 
-action_result.summary.message | string |  |   Successfully updated [1] properties for new host [ip=10.1.16.3] 
+action_result.message | string |  |   Message: Successfully updated [1] properties for new host [ip=10.0.0.1] 
+action_result.summary.message | string |  |   Successfully updated [1] properties for new host [ip=10.0.0.1] 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1   
 
@@ -298,16 +298,16 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.property_name | string |  `forescout property name`  |   Prop_Test 
-action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.1.16.161 
+action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.0.0.1 
 action_result.parameter.host_key_name | string |  |   ip 
 action_result.data.\*.property_name | string |  `forescout property name`  |   Prop_Test 
 action_result.data.\*.response_code | string |  |   FSAPI_OK 
 action_result.data.\*.host_key_name | string |  |   ip 
-action_result.data.\*.host_key_value | string |  `ip`  |   10.1.16.161 
-action_result.data.\*.response_message | string |  |   Successfully deleted 1 properties for [ip=10.1.16.161] 
+action_result.data.\*.host_key_value | string |  `ip`  |   10.0.0.1 
+action_result.data.\*.response_message | string |  |   Successfully deleted 1 properties for [ip=10.0.0.1] 
 action_result.status | string |  |   success  failed 
-action_result.message | string |  |   Message: Successfully deleted 1 properties for [ip=10.1.16.161] 
-action_result.summary.message | string |  |   Successfully deleted 1 properties for [ip=10.1.16.161] 
+action_result.message | string |  |   Message: Successfully deleted 1 properties for [ip=10.0.0.1] 
+action_result.summary.message | string |  |   Successfully deleted 1 properties for [ip=10.0.0.1] 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1   
 
@@ -332,19 +332,19 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.create_host | boolean |  |   True  False 
-action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.1.16.161 
+action_result.parameter.host_key_value | string |  `forescout mac address`  `mac address`  `ip`  |   10.0.0.1 
 action_result.parameter.host_key_name | string |  |   ip 
 action_result.parameter.property_value | string |  |   property_value 
 action_result.parameter.property_name | string |  `forescout property name`  |   Prop_String 
 action_result.data.\*.response_code | string |  |   FSAPI_OK 
-action_result.data.\*.response_message | string |  |   Successfully updated [1] properties for host [ip=10.1.16.161] 
-action_result.data.\*.host_key_value | string |  `ip`  |   10.1.16.161 
+action_result.data.\*.response_message | string |  |   Successfully updated [1] properties for host [ip=10.0.0.1] 
+action_result.data.\*.host_key_value | string |  `ip`  |   10.0.0.1 
 action_result.data.\*.host_key_name | string |  |   ip 
 action_result.data.\*.property_value | string |  |   property_value 
 action_result.data.\*.property_name | string |  `forescout property name`  |   Prop_String 
 action_result.status | string |  |   success  failed 
-action_result.message | string |  |   Message: Successfully updated [1] properties for host [ip=10.1.16.161] 
-action_result.summary.message | string |  |   Successfully updated [1] properties for host [ip=10.1.16.161] 
+action_result.message | string |  |   Message: Successfully updated [1] properties for host [ip=10.0.0.1] 
+action_result.summary.message | string |  |   Successfully updated [1] properties for host [ip=10.0.0.1] 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1   
 
