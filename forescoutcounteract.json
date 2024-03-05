@@ -66,8 +66,7 @@
         "verify_server_cert": {
             "data_type": "boolean",
             "description": "Verify server certificate",
-            "order": 8,
-            "default": false
+            "order": 8
         }
     },
     "actions": [
@@ -94,7 +93,7 @@
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -128,7 +127,7 @@
                     "data_path": "action_result.data.*.links.*.href",
                     "data_type": "string",
                     "example_values": [
-                        "https://10.1.16.161/api/hosts/167841953"
+                        "https://10.0.0.1/api/hosts/167841953"
                     ],
                     "contains": [
                         "url"
@@ -359,7 +358,7 @@
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -425,7 +424,7 @@
                     "data_path": "action_result.data.*.fields.access_ip.value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -639,14 +638,14 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Host id: 10.1.16.161"
+                        "Host id: 10.0.0.1"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.host_ip",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -723,8 +722,7 @@
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.1",
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -762,8 +760,7 @@
                     "data_path": "action_result.data.*.links.*.href",
                     "data_type": "string",
                     "example_values": [
-                        "https://10.1.16.161/api/hosts/167841793",
-                        "https://10.1.16.161/api/hosts/167841953"
+                        "https://10.0.0.1/api/hosts/167841793"
                     ],
                     "contains": [
                         "url"
@@ -887,7 +884,7 @@
                     "data_path": "action_result.parameter.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.3"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "forescout mac address",
@@ -917,7 +914,7 @@
                     "data_path": "action_result.data.*.response_message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully updated [1] properties for new host [ip=10.1.16.3]"
+                        "Successfully updated [1] properties for new host [ip=10.0.0.1]"
                     ],
                     "column_name": "Message",
                     "column_order": 1
@@ -926,7 +923,7 @@
                     "data_path": "action_result.data.*.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.3"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "forescout mac address",
@@ -970,14 +967,14 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Message: Successfully updated [1] properties for new host [ip=10.1.16.3]"
+                        "Message: Successfully updated [1] properties for new host [ip=10.0.0.1]"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully updated [1] properties for new host [ip=10.1.16.3]"
+                        "Successfully updated [1] properties for new host [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1056,7 +1053,7 @@
                     "data_path": "action_result.parameter.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "forescout mac address",
@@ -1103,7 +1100,7 @@
                     "data_path": "action_result.data.*.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -1113,7 +1110,7 @@
                     "data_path": "action_result.data.*.response_message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully deleted 1 properties for [ip=10.1.16.161]"
+                        "Successfully deleted 1 properties for [ip=10.0.0.1]"
                     ],
                     "column_name": "Message",
                     "column_order": 1
@@ -1130,14 +1127,14 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Message: Successfully deleted 1 properties for [ip=10.1.16.161]"
+                        "Message: Successfully deleted 1 properties for [ip=10.0.0.1]"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully deleted 1 properties for [ip=10.1.16.161]"
+                        "Successfully deleted 1 properties for [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1226,7 +1223,7 @@
                     "data_path": "action_result.parameter.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "forescout mac address",
@@ -1273,7 +1270,7 @@
                     "data_path": "action_result.data.*.response_message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully updated [1] properties for host [ip=10.1.16.161]"
+                        "Successfully updated [1] properties for host [ip=10.0.0.1]"
                     ],
                     "column_name": "Message",
                     "column_order": 1
@@ -1282,7 +1279,7 @@
                     "data_path": "action_result.data.*.host_key_value",
                     "data_type": "string",
                     "example_values": [
-                        "10.1.16.161"
+                        "10.0.0.1"
                     ],
                     "contains": [
                         "ip"
@@ -1324,14 +1321,14 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Message: Successfully updated [1] properties for host [ip=10.1.16.161]"
+                        "Message: Successfully updated [1] properties for host [ip=10.0.0.1]"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully updated [1] properties for host [ip=10.1.16.161]"
+                        "Successfully updated [1] properties for host [ip=10.0.0.1]"
                     ]
                 },
                 {
