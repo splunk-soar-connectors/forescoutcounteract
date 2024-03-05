@@ -90,26 +90,12 @@
             "parameters": {},
             "output": [
                 {
-                    "data_path": "action_result.data.*.ip",
+                    "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "ip"
-                    ],
-                    "column_name": "IP",
-                    "column_order": 0
-                },
-                {
-                    "data_path": "action_result.data.*.mac",
-                    "data_type": "string",
-                    "contains": [
-                        "forescout mac address",
-                        "mac address"
-                    ],
-                    "column_name": "MAC Address",
-                    "column_order": 1
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.hostId",
@@ -122,6 +108,18 @@
                     ],
                     "column_name": "Host ID",
                     "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.0.0.1"
+                    ],
+                    "contains": [
+                        "ip"
+                    ],
+                    "column_name": "IP",
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.links.*.href",
@@ -141,11 +139,20 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.data.*.mac",
                     "data_type": "string",
+                    "contains": [
+                        "forescout mac address",
+                        "mac address"
+                    ],
+                    "column_name": "MAC Address",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.summary.num_hosts",
+                    "data_type": "numeric",
                     "example_values": [
-                        "success",
-                        "failed"
+                        2
                     ]
                 },
                 {
@@ -153,13 +160,6 @@
                     "data_type": "string",
                     "example_values": [
                         "Num hosts: 2"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.num_hosts",
-                    "data_type": "numeric",
-                    "example_values": [
-                        2
                     ]
                 },
                 {
@@ -192,37 +192,11 @@
             "parameters": {},
             "output": [
                 {
-                    "data_path": "action_result.data.*.rules.*.ruleId",
-                    "data_type": "numeric",
-                    "contains": [
-                        "forescout rule id"
-                    ],
-                    "example_values": [
-                        1822401057983693948
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.rules.*.description",
+                    "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "When a device is NAT, its other classifications may be inaccurate. Therefore, we put the NAT detection first."
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.rules.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "NAT Devices"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.policyId",
-                    "data_type": "numeric",
-                    "contains": [
-                        "forescout policy id"
-                    ],
-                    "example_values": [
-                        -6488799636120036097
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -240,18 +214,37 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
+                    "data_path": "action_result.data.*.policyId",
+                    "data_type": "numeric",
+                    "contains": [
+                        "forescout policy id"
+                    ],
                     "example_values": [
-                        "success",
-                        "failed"
+                        -6488799636120036097
                     ]
                 },
                 {
-                    "data_path": "action_result.message",
+                    "data_path": "action_result.data.*.rules.*.description",
                     "data_type": "string",
                     "example_values": [
-                        "Num policies: 1"
+                        "When a device is NAT, its other classifications may be inaccurate. Therefore, we put the NAT detection first."
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.rules.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "NAT Devices"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.rules.*.ruleId",
+                    "data_type": "numeric",
+                    "contains": [
+                        "forescout rule id"
+                    ],
+                    "example_values": [
+                        1822401057983693948
                     ]
                 },
                 {
@@ -259,6 +252,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num policies: 1"
                     ]
                 },
                 {
@@ -324,6 +324,14 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.host_id",
                     "data_type": "numeric",
                     "contains": [
@@ -355,62 +363,17 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.ip",
-                    "data_type": "string",
-                    "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.mac",
-                    "data_type": "string",
-                    "contains": [
-                        "forescout mac address",
-                        "mac address"
-                    ],
-                    "example_values": [
-                        "00:50:56:8b:00"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "contains": [
-                        "forescout host id"
-                    ],
-                    "example_values": [
-                        167841953
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.onsite.timestamp",
+                    "data_path": "action_result.data.*.fields._times.*.timestamp",
                     "data_type": "numeric",
                     "example_values": [
-                        1537079515
+                        1537315647
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fields.onsite.value",
+                    "data_path": "action_result.data.*.fields._times.*.value",
                     "data_type": "string",
                     "example_values": [
-                        "true"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.comment.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537296024
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.comment.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "Test Comment"
+                        "last_onsite"
                     ]
                 },
                 {
@@ -428,6 +391,174 @@
                     ],
                     "contains": [
                         "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.cl_rule.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537297213
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.cl_rule.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "counteract"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.cl_type.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537297213
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.cl_type.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "Managed(CounterACT)"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.comment.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537296024
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.comment.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test Comment"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.ctdevtype.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537315647
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.ctdevtype.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "appliance"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.engine_seen_packet.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537315647
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.engine_seen_packet.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "true"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fingerprint.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537297213
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fingerprint.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "CounterACT Device"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fsapi_Prop_String.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537306598
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fsapi_Prop_String.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "mystring"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fsapi_Prop_Test.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537306902
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.fsapi_Prop_Test.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.last_nbt_report_time.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537296028
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.last_nbt_report_time.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "1537296028"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.misc.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537297255
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.misc.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "3* * openports 1937755350365319853 1 1537297229 0 0 openports -7973166747367276753 1 1537297229 0 0 openports -3101146461677770228 1 1537297229 0 0 * "
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.online.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537315647
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.online.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "true"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.onsite.timestamp",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1537079515
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.fields.onsite.value",
+                    "data_type": "string",
+                    "example_values": [
+                        "true"
                     ]
                 },
                 {
@@ -459,20 +590,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fields.fsapi_Prop_String.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537306598
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.fsapi_Prop_String.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "mystring"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.fields.va_netfunc.timestamp",
                     "data_type": "numeric",
                     "example_values": [
@@ -487,158 +604,34 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fields._times.*.timestamp",
+                    "data_path": "action_result.data.*.id",
                     "data_type": "numeric",
+                    "contains": [
+                        "forescout host id"
+                    ],
                     "example_values": [
-                        1537315647
+                        167841953
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fields._times.*.value",
+                    "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "example_values": [
-                        "last_onsite"
+                        "10.0.0.1"
+                    ],
+                    "contains": [
+                        "ip"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.fields.online.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537315647
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.online.value",
+                    "data_path": "action_result.data.*.mac",
                     "data_type": "string",
+                    "contains": [
+                        "forescout mac address",
+                        "mac address"
+                    ],
                     "example_values": [
-                        "true"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.misc.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537297255
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.misc.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "3* * openports 1937755350365319853 1 1537297229 0 0 openports -7973166747367276753 1 1537297229 0 0 openports -3101146461677770228 1 1537297229 0 0 * "
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.last_nbt_report_time.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537296028
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.last_nbt_report_time.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "1537296028"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.cl_type.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537297213
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.cl_type.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "Managed(CounterACT)"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.fingerprint.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537297213
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.fingerprint.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "CounterACT Device"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.fsapi_Prop_Test.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537306902
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.fsapi_Prop_Test.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "test"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.ctdevtype.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537315647
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.ctdevtype.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "appliance"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.cl_rule.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537297213
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.cl_rule.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "counteract"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.engine_seen_packet.timestamp",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1537315647
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.fields.engine_seen_packet.value",
-                    "data_type": "string",
-                    "example_values": [
-                        "true"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Host id: 10.0.0.1"
+                        "00:50:56:8b:00"
                     ]
                 },
                 {
@@ -649,6 +642,13 @@
                     ],
                     "contains": [
                         "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Host id: 10.0.0.1"
                     ]
                 },
                 {
@@ -701,6 +701,14 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.prop_val",
                     "data_type": "string",
                     "example_values": [
@@ -719,31 +727,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.ip",
-                    "data_type": "string",
-                    "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "ip"
-                    ],
-                    "column_name": "IP",
-                    "column_order": 0
-                },
-                {
-                    "data_path": "action_result.data.*.mac",
-                    "data_type": "string",
-                    "contains": [
-                        "forescout mac address",
-                        "mac address"
-                    ],
-                    "example_values": [
-                        "00:50:56:8b:00"
-                    ],
-                    "column_name": "MAC Address",
-                    "column_order": 1
-                },
-                {
                     "data_path": "action_result.data.*.hostId",
                     "data_type": "numeric",
                     "example_values": [
@@ -755,6 +738,18 @@
                     ],
                     "column_name": "Host ID",
                     "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.0.0.1"
+                    ],
+                    "contains": [
+                        "ip"
+                    ],
+                    "column_name": "IP",
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.links.*.href",
@@ -774,11 +769,23 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.data.*.mac",
                     "data_type": "string",
+                    "contains": [
+                        "forescout mac address",
+                        "mac address"
+                    ],
                     "example_values": [
-                        "success",
-                        "failed"
+                        "00:50:56:8b:00"
+                    ],
+                    "column_name": "MAC Address",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.summary.num_active_sessions",
+                    "data_type": "numeric",
+                    "example_values": [
+                        5
                     ]
                 },
                 {
@@ -786,13 +793,6 @@
                     "data_type": "string",
                     "example_values": [
                         "Num active sessions: 5"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.num_active_sessions",
-                    "data_type": "numeric",
-                    "example_values": [
-                        5
                     ]
                 },
                 {
@@ -864,20 +864,18 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.property_value",
+                    "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "new vfw"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.property_name",
+                    "data_path": "action_result.parameter.host_key_name",
                     "data_type": "string",
                     "example_values": [
-                        "Prop_String"
-                    ],
-                    "contains": [
-                        "forescout property name"
+                        "ip"
                     ]
                 },
                 {
@@ -895,10 +893,56 @@
                     "column_order": 2
                 },
                 {
-                    "data_path": "action_result.parameter.host_key_name",
+                    "data_path": "action_result.parameter.property_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Prop_String"
+                    ],
+                    "contains": [
+                        "forescout property name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.property_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "new vfw"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.host_key_name",
                     "data_type": "string",
                     "example_values": [
                         "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.host_key_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.0.0.1"
+                    ],
+                    "contains": [
+                        "forescout mac address",
+                        "mac address",
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.property_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Prop_String"
+                    ],
+                    "contains": [
+                        "forescout property name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.property_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "new vfw"
                     ]
                 },
                 {
@@ -920,47 +964,10 @@
                     "column_order": 1
                 },
                 {
-                    "data_path": "action_result.data.*.host_key_value",
+                    "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "forescout mac address",
-                        "mac address",
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.host_key_name",
-                    "data_type": "string",
-                    "example_values": [
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.property_value",
-                    "data_type": "string",
-                    "example_values": [
-                        "new vfw"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.property_name",
-                    "data_type": "string",
-                    "example_values": [
-                        "Prop_String"
-                    ],
-                    "contains": [
-                        "forescout property name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
+                        "Successfully updated [1] properties for new host [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -968,13 +975,6 @@
                     "data_type": "string",
                     "example_values": [
                         "Message: Successfully updated [1] properties for new host [ip=10.0.0.1]"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Successfully updated [1] properties for new host [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1040,13 +1040,18 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.property_name",
+                    "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "Prop_Test"
-                    ],
-                    "contains": [
-                        "forescout property name"
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.host_key_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "ip"
                     ]
                 },
                 {
@@ -1064,9 +1069,29 @@
                     "column_order": 2
                 },
                 {
-                    "data_path": "action_result.parameter.host_key_name",
+                    "data_path": "action_result.parameter.property_name",
                     "data_type": "string",
                     "example_values": [
+                        "Prop_Test"
+                    ],
+                    "contains": [
+                        "forescout property name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.host_key_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.host_key_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.0.0.1"
+                    ],
+                    "contains": [
                         "ip"
                     ]
                 },
@@ -1090,23 +1115,6 @@
                     "column_order": 0
                 },
                 {
-                    "data_path": "action_result.data.*.host_key_name",
-                    "data_type": "string",
-                    "example_values": [
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.host_key_value",
-                    "data_type": "string",
-                    "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "ip"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.response_message",
                     "data_type": "string",
                     "example_values": [
@@ -1116,11 +1124,10 @@
                     "column_order": 1
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "Successfully deleted 1 properties for [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1128,13 +1135,6 @@
                     "data_type": "string",
                     "example_values": [
                         "Message: Successfully deleted 1 properties for [ip=10.0.0.1]"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Successfully deleted 1 properties for [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1212,11 +1212,26 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.create_host",
                     "data_type": "boolean",
                     "example_values": [
                         true,
                         false
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.host_key_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "ip"
                     ]
                 },
                 {
@@ -1234,10 +1249,13 @@
                     "column_order": 2
                 },
                 {
-                    "data_path": "action_result.parameter.host_key_name",
+                    "data_path": "action_result.parameter.property_name",
                     "data_type": "string",
                     "example_values": [
-                        "ip"
+                        "Prop_String"
+                    ],
+                    "contains": [
+                        "forescout property name"
                     ]
                 },
                 {
@@ -1248,13 +1266,37 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.property_name",
+                    "data_path": "action_result.data.*.host_key_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.host_key_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.0.0.1"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.property_name",
                     "data_type": "string",
                     "example_values": [
                         "Prop_String"
                     ],
                     "contains": [
                         "forescout property name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.property_value",
+                    "data_type": "string",
+                    "example_values": [
+                        "property_value"
                     ]
                 },
                 {
@@ -1276,45 +1318,10 @@
                     "column_order": 1
                 },
                 {
-                    "data_path": "action_result.data.*.host_key_value",
+                    "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "10.0.0.1"
-                    ],
-                    "contains": [
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.host_key_name",
-                    "data_type": "string",
-                    "example_values": [
-                        "ip"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.property_value",
-                    "data_type": "string",
-                    "example_values": [
-                        "property_value"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.property_name",
-                    "data_type": "string",
-                    "example_values": [
-                        "Prop_String"
-                    ],
-                    "contains": [
-                        "forescout property name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
+                        "Successfully updated [1] properties for host [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1322,13 +1329,6 @@
                     "data_type": "string",
                     "example_values": [
                         "Message: Successfully updated [1] properties for host [ip=10.0.0.1]"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Successfully updated [1] properties for host [ip=10.0.0.1]"
                     ]
                 },
                 {
@@ -1384,6 +1384,14 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.action",
                     "data_type": "string",
                     "example_values": [
@@ -1412,11 +1420,10 @@
                     "data_type": "string"
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.summary.message",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "Successfully added values to the [1] lists."
                     ]
                 },
                 {
@@ -1427,13 +1434,6 @@
                     ],
                     "column_name": "Status",
                     "column_order": 0
-                },
-                {
-                    "data_path": "action_result.summary.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Successfully added values to the [1] lists."
-                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
