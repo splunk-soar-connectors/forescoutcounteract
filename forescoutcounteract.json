@@ -853,7 +853,8 @@
                     "contains": [
                         "forescout property name"
                     ],
-                    "order": 2
+                    "order": 2,
+                    "primary": true
                 },
                 "property_value": {
                     "description": "The value of the property",
@@ -1035,7 +1036,8 @@
                     "contains": [
                         "forescout property name"
                     ],
-                    "order": 2
+                    "order": 2,
+                    "primary": true
                 }
             },
             "output": [
@@ -1195,7 +1197,8 @@
                     "contains": [
                         "forescout property name"
                     ],
-                    "order": 2
+                    "order": 2,
+                    "primary": true
                 },
                 "property_value": {
                     "description": "The new value of the property",
