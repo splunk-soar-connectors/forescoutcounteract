@@ -1,6 +1,6 @@
 # File: forescoutcounteract_consts.py
 #
-# Copyright (c) 2018-2024 Splunk Inc.
+# Copyright (c) 2018-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
 #
 #
 # Define your constants here
-FS_DEX_HOST_ENDPOINT = '/fsapi/niCore/Hosts'
-FS_DEX_LIST_ENDPOINT = '/fsapi/niCore/Lists'
+FS_DEX_HOST_ENDPOINT = "/fsapi/niCore/Hosts"
+FS_DEX_LIST_ENDPOINT = "/fsapi/niCore/Lists"
 
-FS_DEX_TEST_CONNECTIVITY = \
-    """<?xml version="1.0" encoding="UTF-8"?>
+FS_DEX_TEST_CONNECTIVITY = """<?xml version="1.0" encoding="UTF-8"?>
         <FSAPI TYPE="request" API_VERSION="1.0">
         <TRANSACTION TYPE="update">
         <OPTIONS CREATE_NEW_HOST="true"/>
@@ -28,8 +27,7 @@ FS_DEX_TEST_CONNECTIVITY = \
         </TRANSACTION>
         </FSAPI>"""
 
-FS_DEX_UPDATE_SIMPLE_PROPERTY = \
-    """<?xml version='1.0' encoding='utf-8'?>
+FS_DEX_UPDATE_SIMPLE_PROPERTY = """<?xml version='1.0' encoding='utf-8'?>
         <FSAPI TYPE="request" API_VERSION="1.0">
         <TRANSACTION TYPE="update">
             <OPTIONS CREATE_NEW_HOST="{create_host}"/>
@@ -42,8 +40,7 @@ FS_DEX_UPDATE_SIMPLE_PROPERTY = \
         </TRANSACTION>
         </FSAPI>"""
 
-FS_DEX_DELETE_SIMPLE_PROPERTY = \
-    """<?xml version='1.0' encoding='utf-8'?>
+FS_DEX_DELETE_SIMPLE_PROPERTY = """<?xml version='1.0' encoding='utf-8'?>
         <FSAPI TYPE="request" API_VERSION="1.0">
         <TRANSACTION TYPE="delete">
             <HOST_KEY NAME="{host_key_name}" VALUE="{host_key_value}"/>
@@ -53,8 +50,7 @@ FS_DEX_DELETE_SIMPLE_PROPERTY = \
         </TRANSACTION>
         </FSAPI>"""
 
-FS_DEX_UPDATE_LIST_PROPERTY = \
-    """<?xml version="1.0" encoding="UTF-8"?>
+FS_DEX_UPDATE_LIST_PROPERTY = """<?xml version="1.0" encoding="UTF-8"?>
         <FSAPI TYPE="request" API_VERSION="2.0">
         <TRANSACTION TYPE="{transaction_type}">
             <LISTS>
@@ -63,10 +59,10 @@ FS_DEX_UPDATE_LIST_PROPERTY = \
         </TRANSACTION>
         </FSAPI>"""
 
-FS_WEB_LOGIN = '/api/login'
-FS_WEB_HOSTS = '/api/hosts'
-FS_WEB_HOSTFIELDS = '/api/hostfields'
-FS_WEB_POLICIES = '/api/policies'
+FS_WEB_LOGIN = "/api/login"
+FS_WEB_HOSTS = "/api/hosts"
+FS_WEB_HOSTFIELDS = "/api/hostfields"
+FS_WEB_POLICIES = "/api/policies"
 
 # Error message constants
 FS_ERR_CODE_MSG = "Error code unavailable"
