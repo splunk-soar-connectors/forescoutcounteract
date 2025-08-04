@@ -51,6 +51,8 @@ class ForescoutCounteractConnector(BaseConnector):
         :return: error message
         """
 
+        error_code = FS_ERR_CODE_MSG
+        error_msg = FS_ERR_MSG_UNAVAILABLE
         try:
             if e.args:
                 if len(e.args) > 1:
@@ -62,16 +64,15 @@ class ForescoutCounteractConnector(BaseConnector):
             else:
                 error_code = FS_ERR_CODE_MSG
                 error_msg = FS_ERR_MSG_UNAVAILABLE
-        except:
-            error_code = FS_ERR_CODE_MSG
-            error_msg = FS_ERR_MSG_UNAVAILABLE
+        except Exception:
+            pass
 
         try:
             if error_code in FS_ERR_CODE_MSG:
                 error_text = f"Error Message: {error_msg}"
             else:
                 error_text = f"Error Code: {error_code}. Error Message: {error_msg}"
-        except:
+        except Exception:
             self.debug_print("Error occurred while parsing error message")
             error_text = FS_PARSE_ERR_MSG
 
