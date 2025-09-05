@@ -1,7 +1,7 @@
 # ForeScout CounterACT
 
 Publisher: Splunk <br>
-Connector Version: 2.0.6 <br>
+Connector Version: 2.0.7 <br>
 Product Vendor: ForeScout <br>
 Product Name: CounterACT <br>
 Minimum Product Version: 6.1.1
