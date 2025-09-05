@@ -16,7 +16,7 @@
     "main_module": "forescoutcounteract_connector.py",
     "min_phantom_version": "6.1.1",
     "app_wizard_version": "1.0.0",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "fips_compliant": true,
     "latest_tested_versions": [
         "On-Prem, v8.2.2"
@@ -1162,7 +1162,7 @@
         {
             "action": "update property",
             "description": "Update a property of a host",
-            "verbose": "This action requires DEX credential in asset configuration.<p>The created new host will be only seen on UI when the host value is in the range of IP segment configured in ForeScout CounterACT.</p><p>The property_name field is the Property Tag field of Property created in CounterACT. This action won’t support composite type of property.</p>",
+            "verbose": "This action requires DEX credential in asset configuration.<p>The created new host will be only seen on UI when the host value is in the range of IP segment configured in ForeScout CounterACT.</p><p>The property_name field is the Property Tag field of Property created in CounterACT. This action won\u2019t support composite type of property.</p>",
             "type": "correct",
             "identifier": "update_property",
             "read_only": false,
@@ -1458,5 +1458,11 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
+    }
 }

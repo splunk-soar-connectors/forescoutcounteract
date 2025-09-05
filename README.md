@@ -1,9 +1,9 @@
 # ForeScout CounterACT
 
-Publisher: Splunk \
-Connector Version: 2.0.6 \
-Product Vendor: ForeScout \
-Product Name: CounterACT \
+Publisher: Splunk <br>
+Connector Version: 2.0.6 <br>
+Product Vendor: ForeScout <br>
+Product Name: CounterACT <br>
 Minimum Product Version: 6.1.1
 
 This app implements various network access control actions for ForeScout
@@ -43,21 +43,21 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[list hosts](#action-list-hosts) - List hosts in CounterACT \
-[list policies](#action-list-policies) - List policies in CounterACT \
-[get device info](#action-get-device-info) - Get the properties of a host \
-[get sessions](#action-get-sessions) - Get active sessions in CounterACT \
-[install firewall](#action-install-firewall) - Install a virtual firewall with a property \
-[delete property](#action-delete-property) - Delete a property of a host \
-[update property](#action-update-property) - Update a property of a host \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[list hosts](#action-list-hosts) - List hosts in CounterACT <br>
+[list policies](#action-list-policies) - List policies in CounterACT <br>
+[get device info](#action-get-device-info) - Get the properties of a host <br>
+[get sessions](#action-get-sessions) - Get active sessions in CounterACT <br>
+[install firewall](#action-install-firewall) - Install a virtual firewall with a property <br>
+[delete property](#action-delete-property) - Delete a property of a host <br>
+[update property](#action-update-property) - Update a property of a host <br>
 [update list](#action-update-list) - Update a list by adding, deleting, or deleting all values from it
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -72,7 +72,7 @@ No Output
 
 List hosts in CounterACT
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action requires Web API credential in asset configuration.
@@ -100,7 +100,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List policies in CounterACT
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action requires Web API credential in asset configuration.
@@ -129,7 +129,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get the properties of a host
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 One of the parameters (host_id, host_ip, or host_mac) is required and the first to be provided is used (in that order). This action requires Web API credential in asset configuration.
@@ -196,7 +196,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get active sessions in CounterACT
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action requires Web API credential in asset configuration.
@@ -229,7 +229,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Install a virtual firewall with a property
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action requires DEX credential in asset configuration.
@@ -267,7 +267,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Delete a property of a host
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 This action requires DEX credential in asset configuration.
@@ -302,7 +302,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update a property of a host
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 This action requires DEX credential in asset configuration.<p>The created new host will be only seen on UI when the host value is in the range of IP segment configured in ForeScout CounterACT.</p><p>The property_name field is the Property Tag field of Property created in CounterACT. This action won’t support composite type of property.</p>
@@ -342,7 +342,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update a list by adding, deleting, or deleting all values from it
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 This action requires DEX credential in asset configuration.
