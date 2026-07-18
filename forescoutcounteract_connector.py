@@ -96,6 +96,30 @@ class ForescoutCounteractConnector(BaseConnector):
 
         return phantom.APP_SUCCESS, parameter
 
+    @staticmethod
+    def _build_host_transaction(transaction_type, host_key_name, host_key_value, property_name=None, property_value=None, create_host=None):
+        root = ET.Element("FSAPI", TYPE="request", API_VERSION="1.0")
+        transaction = ET.SubElement(root, "TRANSACTION", TYPE=transaction_type)
+        if create_host is not None:
+            ET.SubElement(transaction, "OPTIONS", CREATE_NEW_HOST=str(create_host).lower())
+        ET.SubElement(transaction, "HOST_KEY", NAME=host_key_name, VALUE=str(host_key_value))
+        properties = ET.SubElement(transaction, "PROPERTIES")
+        if property_name is not None:
+            prop = ET.SubElement(properties, "PROPERTY", NAME=property_name)
+            if property_value is not None:
+                ET.SubElement(prop, "VALUE").text = str(property_value)
+        return ET.tostring(root, encoding="unicode", xml_declaration=True)
+
+    @staticmethod
+    def _build_list_transaction(transaction_type, list_name, values):
+        root = ET.Element("FSAPI", TYPE="request", API_VERSION="2.0")
+        transaction = ET.SubElement(root, "TRANSACTION", TYPE=transaction_type)
+        lists = ET.SubElement(transaction, "LISTS")
+        target_list = ET.SubElement(lists, "LIST", NAME=list_name)
+        for value in values:
+            ET.SubElement(target_list, "VALUE").text = value
+        return ET.tostring(root, encoding="unicode", xml_declaration=True)
+
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
             return RetVal(phantom.APP_SUCCESS, {})
@@ -301,7 +325,7 @@ class ForescoutCounteractConnector(BaseConnector):
             # Test connectivity for DEX
             self.save_progress(f"Connecting to endpoint {FS_DEX_HOST_ENDPOINT} to test DEX connectivity")
 
-            data = FS_DEX_TEST_CONNECTIVITY.format(host_key_value=config["device"])
+            data = self._build_host_transaction("update", "ip", config["device"], create_host=True)
 
             # make rest call
             ret_val, response = self._make_rest_call("dex", FS_DEX_HOST_ENDPOINT, action_result, data=data, method="post")
@@ -484,7 +508,10 @@ class ForescoutCounteractConnector(BaseConnector):
         host_key_value = param["host_key_value"]
         property_name = param["property_name"]
 
-        data = FS_DEX_DELETE_SIMPLE_PROPERTY.format(host_key_name=host_key_name, host_key_value=host_key_value, property_name=property_name)
+        if host_key_name not in {"ip", "mac"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'host_key_name' must be 'ip' or 'mac'")
+
+        data = self._build_host_transaction("delete", host_key_name, host_key_value, property_name=property_name)
 
         # make rest call
         ret_val, response = self._make_rest_call("dex", FS_DEX_HOST_ENDPOINT, action_result, data=data, method="post")
@@ -529,12 +556,11 @@ class ForescoutCounteractConnector(BaseConnector):
         property_value = param["property_value"]
         create_host = str(param.get("create_host", True)).lower()
 
-        data = FS_DEX_UPDATE_SIMPLE_PROPERTY.format(
-            create_host=create_host,
-            host_key_name=host_key_name,
-            host_key_value=host_key_value,
-            property_name=property_name,
-            property_value=property_value,
+        if host_key_name not in {"ip", "mac"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'host_key_name' must be 'ip' or 'mac'")
+
+        data = self._build_host_transaction(
+            "update", host_key_name, host_key_value, property_name=property_name, property_value=property_value, create_host=create_host
         )
 
         # make rest call
@@ -570,16 +596,17 @@ class ForescoutCounteractConnector(BaseConnector):
         list_name = param["list_name"]
         values = param.get("values")
 
-        list_body = ""
+        if transaction_type not in {"add_list_values", "delete_list_values", "delete_all_list_values"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'action' contains an unsupported list operation")
+
         if transaction_type == "delete_all_list_values":
-            list_body = f'<LIST NAME="{list_name}"></LIST>'
+            list_values = []
         else:
             if not values:
                 return RetVal(action_result.set_status(phantom.APP_ERROR, "Please provide values in 'values' action parameter"), None)
-            list_of_values = "".join(["<VALUE>" + item.strip() + "</VALUE>" for item in values.split(",")])
-            list_body = f'<LIST NAME="{list_name}">{list_of_values}</LIST>'
+            list_values = [item.strip() for item in values.split(",")]
 
-        data = FS_DEX_UPDATE_LIST_PROPERTY.format(transaction_type=transaction_type, list_body=list_body)
+        data = self._build_list_transaction(transaction_type, list_name, list_values)
 
         # make rest call
         ret_val, response = self._make_rest_call("dex", FS_DEX_LIST_ENDPOINT, action_result, data=data, method="post")
