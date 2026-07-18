@@ -17,7 +17,7 @@
 import json
 import sys
 import xml.etree.ElementTree as ET
-from urllib.parse import unquote
+from urllib.parse import quote, unquote
 
 import phantom.app as phantom
 import requests
@@ -395,9 +395,9 @@ class ForescoutCounteractConnector(BaseConnector):
         if host_id:
             url = f"{FS_WEB_HOSTS}/{host_id}"
         elif host_ip:
-            url = f"{FS_WEB_HOSTS}/ip/{host_ip}"
+            url = f"{FS_WEB_HOSTS}/ip/{quote(host_ip, safe='')}"
         elif host_mac:
-            url = f"{FS_WEB_HOSTS}/mac/{host_mac}"
+            url = f"{FS_WEB_HOSTS}/mac/{quote(host_mac, safe='')}"
         else:
             return action_result.set_status(phantom.APP_ERROR, "One of the following need to be provided: host_id, host_ip, or host_mac")
 
