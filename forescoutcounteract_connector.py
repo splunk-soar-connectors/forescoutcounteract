@@ -171,9 +171,14 @@ class ForescoutCounteractConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_xml_response(self, r, action_result):
+        if len(r.content) > FS_MAX_XML_RESPONSE_BYTES:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response exceeds the maximum allowed size"), None)
+        if b"<!DOCTYPE" in r.content.upper():
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML responses containing a DOCTYPE are not allowed"), None)
+
         # Try an XML parse
         try:
-            resp_xml = ET.fromstring(r.text)
+            resp_xml = ET.fromstring(r.content)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {err}", None))
@@ -193,20 +198,23 @@ class ForescoutCounteractConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_response(self, r, action_result):
+        content_type = r.headers.get("Content-Type", "")
+        is_xml = "xml" in content_type.lower() or r.content.lstrip().startswith(b"<?xml")
+
         # store the r_text in debug data, it will get dumped in the logs if the action fails
         if hasattr(action_result, "add_debug_data"):
             action_result.add_debug_data({"r_status_code": r.status_code})
-            action_result.add_debug_data({"r_text": r.text})
+            action_result.add_debug_data({"r_text": r.text[:FS_MAX_DEBUG_RESPONSE_CHARS]})
             action_result.add_debug_data({"r_headers": r.headers})
 
         # Process each 'Content-Type' of response separately
 
         # Process a json response
-        if "json" in r.headers.get("Content-Type", ""):
+        if "json" in content_type:
             return self._process_json_response(r, action_result)
 
         # Process a xml response
-        if "<?xml" in r.text:
+        if is_xml:
             return self._process_xml_response(r, action_result)
 
         # Process an HTML response, Do this no matter what the api talks.

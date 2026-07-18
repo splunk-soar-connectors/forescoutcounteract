@@ -4,3 +4,4 @@
 - Enable TLS certificate verification by default; existing assets retain their persisted setting.
 - Encode host identifiers before including them in request paths.
 - Build DEX XML requests with a serializer and validate operation selectors.
+- Reject oversized XML and documents containing entity declarations before parsing.
