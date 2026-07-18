@@ -120,6 +120,19 @@ class ForescoutCounteractConnector(BaseConnector):
             ET.SubElement(target_list, "VALUE").text = value
         return ET.tostring(root, encoding="unicode", xml_declaration=True)
 
+    @staticmethod
+    def _validate_dex_transaction(action_result, response):
+        code_element = response.find(".//CODE")
+        message_element = response.find(".//MESSAGE")
+        code = code_element.text if code_element is not None else None
+        message = message_element.text if message_element is not None else "DEX response did not include a message"
+
+        if not code:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "DEX response did not include a transaction status code"), (code, message))
+        if code.upper() != "OK":
+            return RetVal(action_result.set_status(phantom.APP_ERROR, f"DEX transaction failed ({code}): {message}"), (code, message))
+        return RetVal(phantom.APP_SUCCESS, (code, message))
+
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
             return RetVal(phantom.APP_SUCCESS, {})
@@ -342,6 +355,11 @@ class ForescoutCounteractConnector(BaseConnector):
                 self.save_progress("Test Connectivity for DEX Failed")
                 return action_result.get_status()
 
+            ret_val, _ = self._validate_dex_transaction(action_result, response)
+            if phantom.is_fail(ret_val):
+                self.save_progress("Test Connectivity for DEX Failed")
+                return action_result.get_status()
+
             # Return success
             self.save_progress("Test Connectivity for DEX Passed")
         else:
@@ -529,19 +547,24 @@ class ForescoutCounteractConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+
         action_result.add_data(
             {
                 "host_key_name": host_key_name,
                 "host_key_value": host_key_value,
                 "property_name": property_name,
-                "response_code": response.find(".//CODE").text,
-                "response_message": response.find(".//MESSAGE").text,
+                "response_code": response_code,
+                "response_message": response_message,
             }
         )
 
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
@@ -577,20 +600,25 @@ class ForescoutCounteractConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+
         action_result.add_data(
             {
                 "host_key_name": host_key_name,
                 "host_key_value": host_key_value,
                 "property_name": property_name,
                 "property_value": property_value,
-                "response_code": response.find(".//CODE").text,
-                "response_message": response.find(".//MESSAGE").text,
+                "response_code": response_code,
+                "response_message": response_message,
             }
         )
 
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -622,9 +650,14 @@ class ForescoutCounteractConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+        action_result.add_data({"response_code": response_code, "response_message": response_message})
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
