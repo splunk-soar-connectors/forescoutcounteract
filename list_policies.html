@@ -103,7 +103,7 @@ a.no-word-wrap {
                 {% if items.policyId %}
                   <a class="no-word-wrap"
                      href="javascript:;"
-                     onclick="context_menu(this, [{'contains': ['forescout policy id'], 'value':'{{ items.policyId }}' }], 0, {{ container.id }}, null, false);">
+                     onclick="context_menu(this, [{'contains': ['forescout policy id'], 'value':'{{ items.policyId|escapejs }}' }], 0, {{ container.id }}, null, false);">
                     {{ items.policyId }}
                     &nbsp;
                     <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -129,7 +129,7 @@ a.no-word-wrap {
                     {% if rule.ruleId %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['forescout rule id'], 'value':'{{ rule.ruleId }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['forescout rule id'], 'value':'{{ rule.ruleId|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ rule.ruleId }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
