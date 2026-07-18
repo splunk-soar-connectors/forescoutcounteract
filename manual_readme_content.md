@@ -5,6 +5,11 @@ available. Web API is a read-only module, while DEX is a read and write module.
 In the case of restricting updates to CounterACT, only supply Web API credentials in the asset
 configuration.
 
+TLS certificate verification is enabled by default. Existing assets retain their persisted value
+after upgrade, so review this setting and install the appliance's issuing certificate in the SOAR
+trust store before enabling it. Disable verification only when an administrator has explicitly
+accepted that risk.
+
 ## Playbook Backward Compatibility
 
 - The existing action parameters have been modified in the actions given below. Hence, it is

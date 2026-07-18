@@ -228,7 +228,7 @@ class ForescoutCounteractConnector(BaseConnector):
         body = {"username": config["web_username"], "password": config["web_password"]}
 
         try:
-            response = requests.post(url, headers=header, data=body, verify=config.get("verify_server_cert", False), timeout=FS_DEFAULT_TIMEOUT)
+            response = requests.post(url, headers=header, data=body, verify=config.get("verify_server_cert", True), timeout=FS_DEFAULT_TIMEOUT)
             token = response.text
         except:
             return (phantom.APP_ERROR, "Could not retrieve JWT")
@@ -273,7 +273,7 @@ class ForescoutCounteractConnector(BaseConnector):
         url = f"{self._base_url}{endpoint}"
 
         try:
-            r = request_func(url, auth=auth, headers=headers, verify=config.get("verify_server_cert", False), **kwargs)
+            r = request_func(url, auth=auth, headers=headers, verify=config.get("verify_server_cert", True), **kwargs)
         except requests.exceptions.InvalidSchema:
             error_message = f"Error connecting to server. No connection adapters were found for {url}"
             return RetVal(action_result.set_status(phantom.APP_ERROR, error_message), resp_json)
