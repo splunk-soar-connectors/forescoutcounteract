@@ -1,6 +1,6 @@
 # File: forescoutcounteract_consts.py
 #
-# Copyright (c) 2018-2025 Splunk Inc.
+# Copyright (c) 2018-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,3 +77,5 @@ HOST_ID_INT_PARAM = "'host_id' action parameter"
 
 # Timeout
 FS_DEFAULT_TIMEOUT = 30
+FS_MAX_XML_RESPONSE_BYTES = 10 * 1024 * 1024
+FS_MAX_DEBUG_RESPONSE_CHARS = 10_000

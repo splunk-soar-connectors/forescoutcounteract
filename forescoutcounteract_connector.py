@@ -1,6 +1,6 @@
 # File: forescoutcounteract_connector.py
 #
-# Copyright (c) 2018-2025 Splunk Inc.
+# Copyright (c) 2018-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import json
 import sys
 import xml.etree.ElementTree as ET
-from urllib.parse import unquote
+from urllib.parse import quote, unquote
 
 import phantom.app as phantom
 import requests
@@ -96,6 +96,43 @@ class ForescoutCounteractConnector(BaseConnector):
 
         return phantom.APP_SUCCESS, parameter
 
+    @staticmethod
+    def _build_host_transaction(transaction_type, host_key_name, host_key_value, property_name=None, property_value=None, create_host=None):
+        root = ET.Element("FSAPI", TYPE="request", API_VERSION="1.0")
+        transaction = ET.SubElement(root, "TRANSACTION", TYPE=transaction_type)
+        if create_host is not None:
+            ET.SubElement(transaction, "OPTIONS", CREATE_NEW_HOST=str(create_host).lower())
+        ET.SubElement(transaction, "HOST_KEY", NAME=host_key_name, VALUE=str(host_key_value))
+        properties = ET.SubElement(transaction, "PROPERTIES")
+        if property_name is not None:
+            prop = ET.SubElement(properties, "PROPERTY", NAME=property_name)
+            if property_value is not None:
+                ET.SubElement(prop, "VALUE").text = str(property_value)
+        return ET.tostring(root, encoding="unicode", xml_declaration=True)
+
+    @staticmethod
+    def _build_list_transaction(transaction_type, list_name, values):
+        root = ET.Element("FSAPI", TYPE="request", API_VERSION="2.0")
+        transaction = ET.SubElement(root, "TRANSACTION", TYPE=transaction_type)
+        lists = ET.SubElement(transaction, "LISTS")
+        target_list = ET.SubElement(lists, "LIST", NAME=list_name)
+        for value in values:
+            ET.SubElement(target_list, "VALUE").text = value
+        return ET.tostring(root, encoding="unicode", xml_declaration=True)
+
+    @staticmethod
+    def _validate_dex_transaction(action_result, response):
+        code_element = response.find(".//CODE")
+        message_element = response.find(".//MESSAGE")
+        code = code_element.text if code_element is not None else None
+        message = message_element.text if message_element is not None else "DEX response did not include a message"
+
+        if not code:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "DEX response did not include a transaction status code"), (code, message))
+        if code.upper() != "OK":
+            return RetVal(action_result.set_status(phantom.APP_ERROR, f"DEX transaction failed ({code}): {message}"), (code, message))
+        return RetVal(phantom.APP_SUCCESS, (code, message))
+
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
             return RetVal(phantom.APP_SUCCESS, {})
@@ -147,9 +184,14 @@ class ForescoutCounteractConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_xml_response(self, r, action_result):
+        if len(r.content) > FS_MAX_XML_RESPONSE_BYTES:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response exceeds the maximum allowed size"), None)
+        if b"<!DOCTYPE" in r.content.upper():
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML responses containing a DOCTYPE are not allowed"), None)
+
         # Try an XML parse
         try:
-            resp_xml = ET.fromstring(r.text)
+            resp_xml = ET.fromstring(r.content)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {err}", None))
@@ -169,20 +211,23 @@ class ForescoutCounteractConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_response(self, r, action_result):
+        content_type = r.headers.get("Content-Type", "")
+        is_xml = "xml" in content_type.lower() or r.content.lstrip().startswith(b"<?xml")
+
         # store the r_text in debug data, it will get dumped in the logs if the action fails
         if hasattr(action_result, "add_debug_data"):
             action_result.add_debug_data({"r_status_code": r.status_code})
-            action_result.add_debug_data({"r_text": r.text})
+            action_result.add_debug_data({"r_text": r.text[:FS_MAX_DEBUG_RESPONSE_CHARS]})
             action_result.add_debug_data({"r_headers": r.headers})
 
         # Process each 'Content-Type' of response separately
 
         # Process a json response
-        if "json" in r.headers.get("Content-Type", ""):
+        if "json" in content_type:
             return self._process_json_response(r, action_result)
 
         # Process a xml response
-        if "<?xml" in r.text:
+        if is_xml:
             return self._process_xml_response(r, action_result)
 
         # Process an HTML response, Do this no matter what the api talks.
@@ -228,7 +273,7 @@ class ForescoutCounteractConnector(BaseConnector):
         body = {"username": config["web_username"], "password": config["web_password"]}
 
         try:
-            response = requests.post(url, headers=header, data=body, verify=config.get("verify_server_cert", False), timeout=FS_DEFAULT_TIMEOUT)
+            response = requests.post(url, headers=header, data=body, verify=config.get("verify_server_cert", True), timeout=FS_DEFAULT_TIMEOUT)
             token = response.text
         except:
             return (phantom.APP_ERROR, "Could not retrieve JWT")
@@ -273,7 +318,7 @@ class ForescoutCounteractConnector(BaseConnector):
         url = f"{self._base_url}{endpoint}"
 
         try:
-            r = request_func(url, auth=auth, headers=headers, verify=config.get("verify_server_cert", False), **kwargs)
+            r = request_func(url, auth=auth, headers=headers, verify=config.get("verify_server_cert", True), **kwargs)
         except requests.exceptions.InvalidSchema:
             error_message = f"Error connecting to server. No connection adapters were found for {url}"
             return RetVal(action_result.set_status(phantom.APP_ERROR, error_message), resp_json)
@@ -301,11 +346,16 @@ class ForescoutCounteractConnector(BaseConnector):
             # Test connectivity for DEX
             self.save_progress(f"Connecting to endpoint {FS_DEX_HOST_ENDPOINT} to test DEX connectivity")
 
-            data = FS_DEX_TEST_CONNECTIVITY.format(host_key_value=config["device"])
+            data = self._build_host_transaction("update", "ip", config["device"], create_host=True)
 
             # make rest call
             ret_val, response = self._make_rest_call("dex", FS_DEX_HOST_ENDPOINT, action_result, data=data, method="post")
 
+            if phantom.is_fail(ret_val):
+                self.save_progress("Test Connectivity for DEX Failed")
+                return action_result.get_status()
+
+            ret_val, _ = self._validate_dex_transaction(action_result, response)
             if phantom.is_fail(ret_val):
                 self.save_progress("Test Connectivity for DEX Failed")
                 return action_result.get_status()
@@ -395,9 +445,9 @@ class ForescoutCounteractConnector(BaseConnector):
         if host_id:
             url = f"{FS_WEB_HOSTS}/{host_id}"
         elif host_ip:
-            url = f"{FS_WEB_HOSTS}/ip/{host_ip}"
+            url = f"{FS_WEB_HOSTS}/ip/{quote(host_ip, safe='')}"
         elif host_mac:
-            url = f"{FS_WEB_HOSTS}/mac/{host_mac}"
+            url = f"{FS_WEB_HOSTS}/mac/{quote(host_mac, safe='')}"
         else:
             return action_result.set_status(phantom.APP_ERROR, "One of the following need to be provided: host_id, host_ip, or host_mac")
 
@@ -484,7 +534,10 @@ class ForescoutCounteractConnector(BaseConnector):
         host_key_value = param["host_key_value"]
         property_name = param["property_name"]
 
-        data = FS_DEX_DELETE_SIMPLE_PROPERTY.format(host_key_name=host_key_name, host_key_value=host_key_value, property_name=property_name)
+        if host_key_name not in {"ip", "mac"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'host_key_name' must be 'ip' or 'mac'")
+
+        data = self._build_host_transaction("delete", host_key_name, host_key_value, property_name=property_name)
 
         # make rest call
         ret_val, response = self._make_rest_call("dex", FS_DEX_HOST_ENDPOINT, action_result, data=data, method="post")
@@ -494,19 +547,24 @@ class ForescoutCounteractConnector(BaseConnector):
             # so just return from here
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+
         action_result.add_data(
             {
                 "host_key_name": host_key_name,
                 "host_key_value": host_key_value,
                 "property_name": property_name,
-                "response_code": response.find(".//CODE").text,
-                "response_message": response.find(".//MESSAGE").text,
+                "response_code": response_code,
+                "response_message": response_message,
             }
         )
 
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         # Return success, no need to set the message, only the status
         # BaseConnector will create a textual message based off of the summary dictionary
@@ -529,12 +587,11 @@ class ForescoutCounteractConnector(BaseConnector):
         property_value = param["property_value"]
         create_host = str(param.get("create_host", True)).lower()
 
-        data = FS_DEX_UPDATE_SIMPLE_PROPERTY.format(
-            create_host=create_host,
-            host_key_name=host_key_name,
-            host_key_value=host_key_value,
-            property_name=property_name,
-            property_value=property_value,
+        if host_key_name not in {"ip", "mac"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'host_key_name' must be 'ip' or 'mac'")
+
+        data = self._build_host_transaction(
+            "update", host_key_name, host_key_value, property_name=property_name, property_value=property_value, create_host=create_host
         )
 
         # make rest call
@@ -543,20 +600,25 @@ class ForescoutCounteractConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+
         action_result.add_data(
             {
                 "host_key_name": host_key_name,
                 "host_key_value": host_key_value,
                 "property_name": property_name,
                 "property_value": property_value,
-                "response_code": response.find(".//CODE").text,
-                "response_message": response.find(".//MESSAGE").text,
+                "response_code": response_code,
+                "response_message": response_message,
             }
         )
 
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -570,16 +632,17 @@ class ForescoutCounteractConnector(BaseConnector):
         list_name = param["list_name"]
         values = param.get("values")
 
-        list_body = ""
+        if transaction_type not in {"add_list_values", "delete_list_values", "delete_all_list_values"}:
+            return action_result.set_status(phantom.APP_ERROR, "Parameter 'action' contains an unsupported list operation")
+
         if transaction_type == "delete_all_list_values":
-            list_body = f'<LIST NAME="{list_name}"></LIST>'
+            list_values = []
         else:
             if not values:
                 return RetVal(action_result.set_status(phantom.APP_ERROR, "Please provide values in 'values' action parameter"), None)
-            list_of_values = "".join(["<VALUE>" + item.strip() + "</VALUE>" for item in values.split(",")])
-            list_body = f'<LIST NAME="{list_name}">{list_of_values}</LIST>'
+            list_values = [item.strip() for item in values.split(",")]
 
-        data = FS_DEX_UPDATE_LIST_PROPERTY.format(transaction_type=transaction_type, list_body=list_body)
+        data = self._build_list_transaction(transaction_type, list_name, list_values)
 
         # make rest call
         ret_val, response = self._make_rest_call("dex", FS_DEX_LIST_ENDPOINT, action_result, data=data, method="post")
@@ -587,9 +650,14 @@ class ForescoutCounteractConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        ret_val, (response_code, response_message) = self._validate_dex_transaction(action_result, response)
+        action_result.add_data({"response_code": response_code, "response_message": response_message})
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary["message"] = response.find(".//MESSAGE").text
+        summary["message"] = response_message
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
