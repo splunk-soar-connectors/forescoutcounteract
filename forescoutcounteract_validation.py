@@ -32,6 +32,21 @@ def is_valid_mac_address(value: str) -> bool:
     return bool(_MAC_ADDRESS_PATTERN.fullmatch(value))
 
 
+def read_bounded_response_content(response, max_bytes: int) -> bytes:
+    """Read a streamed response without buffering beyond max_bytes."""
+    content = bytearray()
+    try:
+        for chunk in response.iter_content(chunk_size=64 * 1024):
+            if not chunk:
+                continue
+            if len(content) + len(chunk) > max_bytes:
+                raise ValueError("XML response exceeds the maximum allowed size")
+            content.extend(chunk)
+    finally:
+        response.close()
+    return bytes(content)
+
+
 def parse_xml_without_declarations(content: bytes):
     """Parse XML while rejecting DTD and entity declarations at the parser."""
     try:

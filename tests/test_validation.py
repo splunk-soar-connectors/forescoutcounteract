@@ -17,7 +17,24 @@ import xml.etree.ElementTree as ElementTree
 from forescoutcounteract_validation import (
     is_valid_mac_address,
     parse_xml_without_declarations,
+    read_bounded_response_content,
 )
+
+
+class ChunkedResponse:
+    def __init__(self, chunks):
+        self._chunks = chunks
+        self.consumed = 0
+        self.closed = False
+
+    def iter_content(self, chunk_size):
+        self.chunk_size = chunk_size
+        for chunk in self._chunks:
+            self.consumed += 1
+            yield chunk
+
+    def close(self):
+        self.closed = True
 
 
 class ValidationTests(unittest.TestCase):
@@ -53,6 +70,18 @@ class ValidationTests(unittest.TestCase):
             with self.subTest(encoding=encoding):
                 with self.assertRaises((ValueError, ElementTree.ParseError)):
                     parse_xml_without_declarations(document.encode(encoding))
+
+    def test_reads_streamed_response_within_limit(self):
+        response = ChunkedResponse([b"<x>", b"ok", b"</x>"])
+        self.assertEqual(read_bounded_response_content(response, 10), b"<x>ok</x>")
+        self.assertTrue(response.closed)
+
+    def test_stops_streamed_response_when_limit_is_exceeded(self):
+        response = ChunkedResponse([b"abc", b"def", b"unread"])
+        with self.assertRaisesRegex(ValueError, "maximum allowed size"):
+            read_bounded_response_content(response, 5)
+        self.assertEqual(response.consumed, 2)
+        self.assertTrue(response.closed)
 
 
 if __name__ == "__main__":
