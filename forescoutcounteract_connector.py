@@ -26,6 +26,7 @@ from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
 from forescoutcounteract_consts import *
+from forescoutcounteract_validation import is_valid_mac_address, parse_xml_without_declarations
 
 
 class RetVal(tuple):
@@ -186,12 +187,9 @@ class ForescoutCounteractConnector(BaseConnector):
     def _process_xml_response(self, r, action_result):
         if len(r.content) > FS_MAX_XML_RESPONSE_BYTES:
             return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response exceeds the maximum allowed size"), None)
-        if b"<!DOCTYPE" in r.content.upper():
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML responses containing a DOCTYPE are not allowed"), None)
-
         # Try an XML parse
         try:
-            resp_xml = ET.fromstring(r.content)
+            resp_xml = parse_xml_without_declarations(r.content)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {err}", None))
@@ -447,6 +445,8 @@ class ForescoutCounteractConnector(BaseConnector):
         elif host_ip:
             url = f"{FS_WEB_HOSTS}/ip/{quote(host_ip, safe='')}"
         elif host_mac:
+            if not is_valid_mac_address(host_mac):
+                return action_result.set_status(phantom.APP_ERROR, "host_mac must be a valid MAC address")
             url = f"{FS_WEB_HOSTS}/mac/{quote(host_mac, safe='')}"
         else:
             return action_result.set_status(phantom.APP_ERROR, "One of the following need to be provided: host_id, host_ip, or host_mac")
