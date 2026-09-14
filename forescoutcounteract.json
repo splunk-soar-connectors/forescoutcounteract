@@ -1461,9 +1461,19 @@
         }
     ],
     "pip39_dependencies": {
-        "wheel": []
+        "wheel": [
+            {
+                "module": "defusedxml",
+                "input_file": "wheels/shared/defusedxml-0.7.1-py2.py3-none-any.whl"
+            }
+        ]
     },
     "pip313_dependencies": {
-        "wheel": []
+        "wheel": [
+            {
+                "module": "defusedxml",
+                "input_file": "wheels/shared/defusedxml-0.7.1-py2.py3-none-any.whl"
+            }
+        ]
     }
 }

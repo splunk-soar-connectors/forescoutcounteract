@@ -26,6 +26,11 @@ from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
 from forescoutcounteract_consts import *
+from forescoutcounteract_validation import (
+    is_valid_mac_address,
+    parse_xml_without_declarations,
+    read_bounded_response_content,
+)
 
 
 class RetVal(tuple):
@@ -186,12 +191,9 @@ class ForescoutCounteractConnector(BaseConnector):
     def _process_xml_response(self, r, action_result):
         if len(r.content) > FS_MAX_XML_RESPONSE_BYTES:
             return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response exceeds the maximum allowed size"), None)
-        if b"<!DOCTYPE" in r.content.upper():
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML responses containing a DOCTYPE are not allowed"), None)
-
         # Try an XML parse
         try:
-            resp_xml = ET.fromstring(r.content)
+            resp_xml = parse_xml_without_declarations(r.content)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {err}", None))
@@ -317,6 +319,10 @@ class ForescoutCounteractConnector(BaseConnector):
         # Create a URL to connect to
         url = f"{self._base_url}{endpoint}"
 
+        # Keep the response lazy until its media type is known. XML and
+        # ambiguous response types are consumed through a hard byte cap below.
+        kwargs["stream"] = True
+
         try:
             r = request_func(url, auth=auth, headers=headers, verify=config.get("verify_server_cert", True), **kwargs)
         except requests.exceptions.InvalidSchema:
@@ -328,6 +334,21 @@ class ForescoutCounteractConnector(BaseConnector):
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Error Connecting to server. Details: {err}", resp_json))
+
+        content_type = r.headers.get("Content-Type", "").lower()
+        should_bound_response = (
+            module == "dex" or "xml" in content_type or not any(media_type in content_type for media_type in ("json", "html"))
+        )
+        if should_bound_response:
+            try:
+                content = read_bounded_response_content(r, FS_MAX_XML_RESPONSE_BYTES)
+            except ValueError as e:
+                return RetVal(action_result.set_status(phantom.APP_ERROR, str(e)), None)
+            except Exception as e:
+                err = self._get_error_message_from_exception(e)
+                return RetVal(action_result.set_status(phantom.APP_ERROR, f"Error reading response. Details: {err}"), None)
+            r._content = content
+            r._content_consumed = True
 
         return self._process_response(r, action_result)
 
@@ -447,6 +468,8 @@ class ForescoutCounteractConnector(BaseConnector):
         elif host_ip:
             url = f"{FS_WEB_HOSTS}/ip/{quote(host_ip, safe='')}"
         elif host_mac:
+            if not is_valid_mac_address(host_mac):
+                return action_result.set_status(phantom.APP_ERROR, "host_mac must be a valid MAC address")
             url = f"{FS_WEB_HOSTS}/mac/{quote(host_mac, safe='')}"
         else:
             return action_result.set_status(phantom.APP_ERROR, "One of the following need to be provided: host_id, host_ip, or host_mac")
