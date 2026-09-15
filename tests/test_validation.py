@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ElementTree
 
 from forescoutcounteract_validation import (
     is_valid_mac_address,
-    parse_xml_without_declarations,
+    parse_xml_without_entities,
     read_bounded_response_content,
 )
 
@@ -61,15 +61,29 @@ class ValidationTests(unittest.TestCase):
                 self.assertFalse(is_valid_mac_address(value))
 
     def test_accepts_plain_xml(self):
-        root = parse_xml_without_declarations(b"<response><status>ok</status></response>")
+        root = parse_xml_without_entities(b"<response><status>ok</status></response>")
         self.assertEqual(root.findtext("status"), "ok")
 
-    def test_rejects_dtd_in_supported_encodings(self):
+    def test_accepts_dtd_without_entities_in_parser_supported_encodings(self):
+        document = '<!DOCTYPE response SYSTEM "forescout-response.dtd"><response><status>ok</status></response>'
+        for encoding in ("utf-8", "utf-16"):
+            with self.subTest(encoding=encoding):
+                root = parse_xml_without_entities(document.encode(encoding))
+                self.assertEqual(root.findtext("status"), "ok")
+
+    def test_rejects_internal_entities_in_supported_encodings(self):
         document = '<!DOCTYPE x [<!ENTITY a "expanded">]><x>&a;</x>'
         for encoding in ("utf-8", "utf-16", "utf-32"):
             with self.subTest(encoding=encoding):
                 with self.assertRaises((ValueError, ElementTree.ParseError)):
-                    parse_xml_without_declarations(document.encode(encoding))
+                    parse_xml_without_entities(document.encode(encoding))
+
+    def test_rejects_external_entities_in_supported_encodings(self):
+        document = '<!DOCTYPE x [<!ENTITY a SYSTEM "file:///etc/passwd">]><x>&a;</x>'
+        for encoding in ("utf-8", "utf-16", "utf-32"):
+            with self.subTest(encoding=encoding):
+                with self.assertRaises((ValueError, ElementTree.ParseError)):
+                    parse_xml_without_entities(document.encode(encoding))
 
     def test_reads_streamed_response_within_limit(self):
         response = ChunkedResponse([b"<x>", b"ok", b"</x>"])

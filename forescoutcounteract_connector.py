@@ -28,7 +28,7 @@ from phantom.base_connector import BaseConnector
 from forescoutcounteract_consts import *
 from forescoutcounteract_validation import (
     is_valid_mac_address,
-    parse_xml_without_declarations,
+    parse_xml_without_entities,
     read_bounded_response_content,
 )
 
@@ -193,7 +193,7 @@ class ForescoutCounteractConnector(BaseConnector):
             return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response exceeds the maximum allowed size"), None)
         # Try an XML parse
         try:
-            resp_xml = parse_xml_without_declarations(r.content)
+            resp_xml = parse_xml_without_entities(r.content)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {err}", None))
