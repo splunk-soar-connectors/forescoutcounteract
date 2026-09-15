@@ -47,14 +47,14 @@ def read_bounded_response_content(response, max_bytes: int) -> bytes:
     return bytes(content)
 
 
-def parse_xml_without_declarations(content: bytes):
-    """Parse XML while rejecting DTD and entity declarations at the parser."""
+def parse_xml_without_entities(content: bytes):
+    """Parse XML while rejecting entity declarations and external references."""
     try:
         return DefusedElementTree.fromstring(
             content,
-            forbid_dtd=True,
+            forbid_dtd=False,
             forbid_entities=True,
             forbid_external=True,
         )
     except DefusedXmlException as exc:
-        raise ValueError("XML DTD and entity declarations are not allowed") from exc
+        raise ValueError("XML entity declarations and external references are not allowed") from exc
